@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Falsa Normalidad</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ▬▬▬▬▬▬▬▬ VIDEO INTRO ▬▬▬▬▬▬▬▬ -->
+  <div class="video-container">
+    <video autoplay muted playsinline id="intro-video">
+      <source src="videos/LOADING SCREEN_CELULAR.mp4" type="video/mp4">
+    </video>
+
+    <div class="sound-circle" id="sound-circle">
+      <img src="icons/sound_icon.png" id="sound-btn" alt="Sonido" />
+    </div>
+
+    <div class="overlay" id="overlay">
+      <button id="btn-entrar">ENTRAR A LA EXPERIENCIA</button>
+    </div>
+  </div>
+
+  <!-- ▬▬▬▬▬▬▬▬ GALERÍA ▬▬▬▬▬▬▬▬ -->
+  <div id="gallery" class="gallery hidden">
+    <img src="icons/case_1.png" alt="Caso 1">
+    <img src="icons/case_2.png" alt="Caso 2">
+    <img src="icons/case_3.png" alt="Caso 3">
+    <img src="icons/case_4.png" alt="Caso 4">
+    <img src="icons/case_5.png" alt="Caso 5">
+    <img src="icons/case_6.png" alt="Caso 6">
+    <img src="icons/case_7.png" alt="Caso 7">
+    <img src="icons/case_8.png" alt="Caso 8">
+    <img src="icons/case_9.png" alt="Caso 9">
+    <img src="icons/case_10.png" alt="Caso 10">
+    <img src="icons/case_11.png" alt="Caso 11">
+    <img src="icons/case_12.png" alt="Caso 12">
+  </div>
+
+  <!-- ▬▬▬▬▬▬▬▬ CASE VIEW ▬▬▬▬▬▬▬▬ -->
+  <div id="case-view" class="case-view hidden">
+    <div class="case-content">
+      
+      <img id="case-image" src="icons/Case_1_sin_bg.png" alt="Caso" />
+
+      <div class="case-controls">
+        <button id="btn-prev">⟨</button>
+        <button id="btn-info">!</button>
+        <button id="btn-next">⟩</button>
+      </div>
+
+      <button id="btn-gallery">GALERÍA</button>
+      <h2 id="case-name">CASO 1</h2>
+    </div>
+  </div>
+
+  <!-- ▬▬▬▬▬▬▬▬ VIDEO EXPLOSIÓN ▬▬▬▬▬▬▬▬ -->
+  <div id="explosion-overlay" class="hidden">
+
+    <div id="closeX" class="btn-close-x">✖</div>
+
+    <video id="explosion-video" preload="auto"></video>
+
+    <div id="postVideoBtns" class="post-video-buttons hidden">
+      <button id="btn-ver-video">VER VIDEO</button>
+    </div>
+
+  </div>
+
+  <!-- ▬▬▬▬▬▬▬▬ SCRIPT ▬▬▬▬▬▬▬▬ -->
+  <script>
+
+    /* ---------------- VIDEO INTRO ---------------- */
+
+    const video = document.getElementById("intro-video");
+    const soundCircle = document.getElementById("sound-circle");
+    const btnEntrar = document.getElementById("btn-entrar");
+    const overlay = document.getElementById("overlay");
+    const gallery = document.getElementById("gallery");
+    const caseView = document.getElementById("case-view");
+    const caseImage = document.getElementById("case-image");
+    const caseName = document.getElementById("case-name");
+    const btnPrev = document.getElementById("btn-prev");
+    const btnNext = document.getElementById("btn-next");
+    const btnGallery = document.getElementById("btn-gallery");
+    const btnInfo = document.getElementById("btn-info");
+
+    video.playbackRate = 1.2;
+
+    soundCircle.addEventListener("click", () => {
+      video.muted = !video.muted;
+      soundCircle.classList.toggle("active", !video.muted);
+    });
+
+    setTimeout(() => overlay.classList.add("visible"), 30000);
+
+    btnEntrar.addEventListener("click", () => {
+      const videoContainer = document.querySelector(".video-container");
+      videoContainer.classList.add("zoom-fade-out");
+
+      setTimeout(() => {
+        videoContainer.style.display = "none";
+        caseView.classList.remove("hidden");
+        setTimeout(() => caseView.classList.add("visible"), 50);
+        showCase(0);
+      }, 1000);
+    });
+
+    /* ---------------- CASOS ---------------- */
+
+    const cases = [
+      {
+        img: "icons/Case_1_sin_bg.png",
+        name: "CASO 1 - Esclavitud Sexual",
+        explosionVideo: "videos/shatter_and_text.mp4",
+        animatic: "videos/esclavitud_sexual_animatic.mp4"
+      },
+      {
+        img: "icons/Case_2_sin_bg.png",
+        name: "CASO 2 - Mendicidad Forzada",
+        explosionVideo: "videos/shatter_and_text_mendicidad.mp4",
+        animatic: "videos/mendicidad_animatic.mp4"
+      },
+      {
+        img: "icons/Case_3_sin_bg.png",
+        name: "CASO 3 - Matrimonio Forzado"
+      },
+      {
+        img: "icons/Case_4_sin_bg.png",
+        name: "CASO 4 - Manipulación Psicológica"
+      }
+      // (tus otros casos siguen igual)
+    ];
+
+    let currentCase = 0;
+
+    function showCase(index) {
+      currentCase = index;
+      caseImage.src = cases[index].img;
+      caseName.textContent = cases[index].name;
+      gallery.classList.add("hidden");
+      caseView.classList.remove("hidden");
+    }
+
+    btnNext.addEventListener("click", () => {
+      currentCase = (currentCase + 1) % cases.length;
+      showCase(currentCase);
+    });
+
+    btnPrev.addEventListener("click", () => {
+      currentCase = (currentCase - 1 + cases.length) % cases.length;
+      showCase(currentCase);
+    });
+
+    btnGallery.addEventListener("click", () => {
+      caseView.classList.remove("visible");
+      setTimeout(() => {
+        caseView.classList.add("hidden");
+        gallery.classList.remove("hidden");
+        setTimeout(() => gallery.classList.add("visible"), 50);
+      }, 400);
+    });
+
+    document.querySelectorAll(".gallery img").forEach((img, index) => {
+      img.addEventListener("click", () => {
+        gallery.classList.remove("visible");
+        setTimeout(() => {
+          gallery.classList.add("hidden");
+          showCase(index);
+          setTimeout(() => caseView.classList.add("visible"), 50);
+        }, 400);
+      });
+    });
+
+/* ---------------- VIDEO EXPLOSIÓN ---------------- */
+const explosionOverlay = document.getElementById("explosion-overlay");
+const explosionVideo = document.getElementById("explosion-video");
+const closeX = document.getElementById("closeX");
+const postVideoBtns = document.getElementById("postVideoBtns");
+const btnVerVideo = document.getElementById("btn-ver-video");
+
+let showButtonsTimeout;
+let snapshot = { time: 0, isVisible: false };
+
+// Función que muestra X y VER VIDEO después de cierto tiempo
+function scheduleButtons(delay = 2000) {
+  closeX.classList.remove("visible");
+  btnVerVideo.classList.remove("show");
+  postVideoBtns.style.display = "flex";
+
+  if(showButtonsTimeout) clearTimeout(showButtonsTimeout);
+
+  showButtonsTimeout = setTimeout(() => {
+    closeX.classList.add("visible");
+    btnVerVideo.classList.add("show");
+    snapshot.time = explosionVideo.currentTime;
+    snapshot.isVisible = true;
+  }, delay);
+}
+
+// Botón INFO → abrir video de explosión segun caso
+btnInfo.addEventListener("click", () => {
+
+  if (!cases[currentCase].explosionVideo) return;
+
+  explosionOverlay.classList.remove("hidden");
+  explosionVideo.src = cases[currentCase].explosionVideo;
+  explosionVideo.currentTime = 0;
+  explosionVideo.play();
+  scheduleButtons(3000);
+});
+
+// Botón VER VIDEO → abrir animatic segun caso
+btnVerVideo.addEventListener("click", () => {
+
+  if (!cases[currentCase].animatic) return;
+
+  btnVerVideo.classList.remove("show");
+  postVideoBtns.style.display = "none";
+
+  explosionVideo.src = cases[currentCase].animatic;
+  explosionVideo.currentTime = 0;
+  explosionVideo.play();
+
+  closeX.style.top = "10px";
+  closeX.style.left = "90%";
+  closeX.style.width = "32px";
+  closeX.style.height = "32px";
+});
+
+// Cuando termine el animatic
+explosionVideo.addEventListener("ended", () => {
+  if (explosionVideo.src.includes(cases[currentCase].animatic)) {
+
+    explosionVideo.src = cases[currentCase].explosionVideo;
+    explosionVideo.currentTime = snapshot.time || 0;
+    explosionVideo.play();
+
+    closeX.style.top = "22%";
+    closeX.style.left = "50%";
+    closeX.style.width = "42px";
+    closeX.style.height = "42px";
+
+    if (snapshot.isVisible) {
+      postVideoBtns.style.display = "flex";
+      btnVerVideo.classList.add("show");
+    }
+  }
+});
+
+// X → comportamiento dual
+closeX.addEventListener("click", () => {
+
+  if (explosionVideo.src.includes(cases[currentCase].animatic)) {
+
+    explosionVideo.src = cases[currentCase].explosionVideo;
+    explosionVideo.currentTime = snapshot.time || 0;
+    explosionVideo.play();
+
+    closeX.style.top = "22%";
+    closeX.style.left = "50%";
+    closeX.style.width = "42px";
+    closeX.style.height = "42px";
+
+    if(snapshot.isVisible) {
+      postVideoBtns.style.display = "flex";
+      btnVerVideo.classList.add("show");
+    }
+
+  } else {
+
+    explosionVideo.pause();
+    const reversePlayback = () => {
+      if(explosionVideo.currentTime > 0){
+        explosionVideo.currentTime -= 0.033;
+        requestAnimationFrame(reversePlayback);
+      } else {
+        explosionOverlay.classList.add("hidden");
+        explosionVideo.currentTime = 0;
+      }
+    };
+    reversePlayback();
+  }
+});
+
+  </script>
+
+</body>
+</html>

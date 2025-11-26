@@ -1,0 +1,678 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+
+/* --- RESET GENERAL --- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+  background: black;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+}
+
+/* --- CONTENEDOR DEL VIDEO --- */
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  overflow: hidden;
+  z-index: 0;
+}
+
+/* --- VIDEO BASE --- */
+video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* rellena toda la pantalla */
+  z-index: 1;
+  background-color: black;
+}
+
+/* --- RELACIÓN DE ASPECTO VERTICAL (teléfonos como iPhone SE, Samsung S20, etc.) --- */
+@media (max-aspect-ratio: 10/16) {
+  video {
+    width: auto;
+    height: 100%;
+    object-fit: contain; /* mantiene todo visible, con bordes negros si es necesario */
+  }
+}
+
+/* --- RELACIÓN DE ASPECTO HORIZONTAL O TABLET --- */
+@media (min-aspect-ratio: 16/10) {
+  video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+/* --- AJUSTE PARA NOTCH O BARRAS --- */
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* --- CÍRCULO BLANCO DEL SONIDO --- */
+.sound-circle {
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
+  width: 65px;
+  height: 65px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 3;
+  transition: all 0.4s ease;
+}
+
+#sound-btn {
+  width: 28px;
+  height: 28px;
+  filter: brightness(1.4);
+  pointer-events: none;
+}
+
+.sound-circle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* Sonido activado */
+.sound-circle.active {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+  border-color: #fff;
+}
+
+/* Oculto */
+.sound-circle.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+  transition: all 0.6s ease;
+}
+
+/* --- OVERLAY DEL BOTÓN PRINCIPAL --- */
+.overlay {
+  position: absolute;
+  bottom: 6%;
+  right: 8%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease, transform 0.6s ease;
+  z-index: 2;
+}
+
+.overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* --- BOTÓN "ENTRAR A LA EXPERIENCIA" --- */
+#btn-entrar {
+  background: #e50914;
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 600;
+  padding: 16px 72px;
+  border-radius: 50px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(229, 9, 20, 0.4);
+  position: relative;
+  z-index: 20;
+}
+
+#btn-entrar:hover {
+  background: #ff0a16;
+  transform: scale(1.07);
+  box-shadow: 0 0 30px rgba(255, 0, 20, 0.6);
+}
+
+/* --- OVERLAY CONTENEDOR DEL BOTÓN --- */
+.overlay {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 1s ease;
+  text-align: center;
+}
+
+.overlay.visible {
+  opacity: 1;
+}
+
+.overlay.hidden {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+}
+
+/* --- SONIDO --- */
+.sound-circle {
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  z-index: 10;
+}
+
+#sound-btn {
+  width: 28px;
+  height: 28px;
+}
+
+/* --- RESPONSIVIDAD --- */
+
+/* 🖥️ Tablets y pantallas medianas */
+@media (max-width: 1800px) {
+  #btn-entrar {
+    font-size: 1.3rem;
+    padding: 14px 60px;
+  }
+
+  .sound-circle {
+    width: 55px;
+    height: 55px;
+    bottom: 4%;
+    left: 4%;
+  }
+
+  #sound-btn {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* 📱 Celulares (por ancho) */
+@media (max-width: 1080px) {
+  .overlay {
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  #btn-entrar {
+    font-size: 1.1rem;
+    padding: 12px 40px;
+  }
+
+  .sound-circle {
+    width: 45px;
+    height: 45px;
+    bottom: 5%;
+    left: 5%;
+  }
+
+  #sound-btn {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* 📲 Celulares con pantallas muy altas (S20 Ultra, etc.) */
+@media (min-aspect-ratio: 9/18) {
+  .overlay {
+    bottom: 12%;
+  }
+
+  #btn-entrar {
+    font-size: 1.2rem;
+    padding: 14px 48px;
+  }
+}
+
+/* 📱 iPhones pequeños o pantallas bajas */
+@media (max-height: 700px) {
+  .overlay {
+    bottom: 6%;
+  }
+
+  #btn-entrar {
+    font-size: 1rem;
+    padding: 10px 36px;
+  }
+}
+
+/* 🔁 Landscape (horizontal) */
+@media (orientation: landscape) {
+  .overlay {
+    bottom: 5%;
+  }
+
+  #btn-entrar {
+    transform: scale(0.8);
+  }
+}
+
+/* --- Ajuste del video según pantalla --- */
+@media (max-aspect-ratio: 9/16) {
+  video {
+    object-fit: contain;
+    background-color: black;
+  }
+}
+
+@media (min-aspect-ratio: 9/16) {
+  video {
+    object-fit: cover;
+  }
+}
+
+/* --- GALERÍA DE CASOS --- */
+.gallery {
+  display: none;
+  position: fixed;
+  inset: 0; /* top, left, right, bottom = 0 */
+  width: 100vw;
+  height: 100vh;
+  background-color: #847765;
+  padding: 2vh 2vw;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 1.5vw;
+  justify-items: center;
+  align-items: center;
+  overflow-y: auto; /* ✅ Permite hacer scroll si hay muchas imágenes */
+  scroll-behavior: smooth;
+  z-index: 5;
+}
+
+/* Ocultar / mostrar */
+.gallery.hidden {
+  display: none;
+}
+
+.gallery.visible {
+  display: grid;
+}
+
+/* --- GALERÍA DE CASOS --- */
+.gallery {
+  display: none; /* Oculta por defecto */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #847765;
+  padding: 2vh 2vw;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* ✅ Imágenes más pequeñas */
+  grid-auto-rows: minmax(120px, auto);
+  gap: 1vw;
+
+  justify-items: center;
+  align-items: center;
+
+  overflow-y: auto; /* ✅ Si hay muchas, se puede hacer scroll */
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  z-index: 5;
+}
+
+/* Mostrar / ocultar */
+.gallery.hidden {
+  display: none;
+}
+
+.gallery.visible {
+  display: grid;
+}
+
+/* --- IMÁGENES DE LA GALERÍA --- */
+.gallery img {
+  width: 100%;
+  height: 100%;
+  max-width: 160px; /* ✅ Evita que crezcan demasiado */
+  max-height: 160px; /* ✅ Tamaño uniforme y más pequeño */
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+/* --- RESPONSIVIDAD --- */
+
+/* Pantallas grandes */
+@media (min-width: 1200px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5vw;
+  }
+
+  .gallery img {
+    max-width: 180px;
+    max-height: 180px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 2vw;
+  }
+
+  .gallery img {
+    max-width: 150px;
+    max-height: 150px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 767px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* ✅ Muchas columnas pequeñas */
+    gap: 3vw;
+    padding: 3vw;
+  }
+
+  .gallery img {
+    max-width: 110px;
+    max-height: 110px;
+  }
+}
+
+/* Celulares pequeños (iPhone SE) */
+@media (max-width: 400px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 4vw;
+    padding: 4vw;
+  }
+
+  .gallery img {
+    max-width: 95px;
+    max-height: 95px;
+  }
+}
+
+/* --- EFECTO DE SALIDA DEL VIDEO (zoom + fade) --- */
+.zoom-fade-out {
+  transform: scale(1.2);
+  opacity: 0;
+  transition: all 1.2s ease-in-out;
+}
+
+/* --- EFECTO DE ENTRADA DE LA GALERÍA --- */
+.gallery {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.gallery.visible {
+  display: grid;
+  opacity: 1; /* aparecerá suavemente */
+}
+
+/* --- PANTALLA DEL CASO --- */
+.case-view {
+  position: fixed;
+  inset: 0;
+  background-color: #f8b7b7; /* color base, puedes cambiarlo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+  z-index: 6;
+}
+
+.case-view.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* --- Contenedor interno --- */
+.case-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- Imagen principal --- */
+.case-content img {
+  width: 70%;
+  max-width: 420px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 40px;
+  transition: transform 0.5s ease;
+}
+
+.case-content img:hover {
+  transform: scale(1.05);
+}
+
+/* --- Controles (botones redondos debajo de la imagen) --- */
+.case-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.case-controls button {
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid white;
+  color: white;
+  font-size: 1.8rem;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.case-controls button:hover {
+  background: white;
+  color: #333;
+  transform: scale(1.1);
+}
+
+/* --- Botón de galería --- */
+#btn-gallery {
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  color: white;
+  padding: 12px 28px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#btn-gallery:hover {
+  background: white;
+  color: #333;
+}
+
+/* --- Nombre del caso --- */
+#case-name {
+  color: white;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 30px;
+}
+/* --- Transición suave entre caso y galería --- */
+.gallery, .case-view {
+  opacity: 0;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: scale(0.98);
+}
+
+.gallery.visible, .case-view.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Evitar parpadeo visual */
+.gallery.hidden, .case-view.hidden {
+  pointer-events: none;
+}
+
+
+/* 💥 VIDEO DE EXPLOSIÓN (solo para Caso 1) */
+#explosion-overlay {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+#explosion-overlay.hidden {
+  display: none;
+}
+
+#explosion-video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  z-index: 1;
+}
+
+
+
+
+
+/* Botón X */
+.btn-close-x {
+  position: absolute;
+  top: 22%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: black;
+  border: 3px solid red;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 99999;
+  transition: opacity 0.6s ease-out;
+  box-shadow: 0 0 12px rgba(255,0,0,0.6);
+}
+
+/* Pulso X */
+@keyframes pulseX {
+  0% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.6); }
+  50% { transform: translateX(-50%) scale(1.08); box-shadow: 0 0 16px rgba(255,0,0,0.9); }
+  100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(255,0,0,0.6); }
+}
+
+.btn-close-x.visible {
+  opacity: 1;
+  animation: pulseX 1.8s infinite ease-in-out;
+}
+
+/* Botón VER VIDEO */
+#btn-ver-video {
+  position: absolute;
+  top: 73%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  background-color: #FF000099;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}
+
+#btn-ver-video:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+}
+
+@keyframes pulseVideo {
+  0%   { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(139,0,0,0.6); }
+  50%  { transform: translateX(-50%) scale(1.08); box-shadow: 0 0 16px rgba(139,0,0,0.9); }
+  100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(139,0,0,0.6); }
+}
+
+
+#btn-ver-video.show {
+  opacity: 1;
+  animation: pulseVideo 1.8s infinite ease-in-out;
+}
+
+
+
+
+
+
+
+
+
