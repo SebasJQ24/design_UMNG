@@ -103,7 +103,10 @@
       soundCircle.classList.toggle("active", !video.muted);
     });
 
-    setTimeout(() => overlay.classList.add("visible"), 30000);
+    video.addEventListener("ended", () => {
+      overlay.classList.add("visible");
+    });
+
 
     btnEntrar.addEventListener("click", () => {
       const videoContainer = document.querySelector(".video-container");
