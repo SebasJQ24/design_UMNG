@@ -638,7 +638,7 @@ video {
   left: 50%;
   transform: translateX(-50%);
   z-index: 999;
-  background-color: #FF000099;
+  background-color: #b80505;
   color: white;
   font-family: 'Montserrat', sans-serif;
   padding: 5px 10px;
@@ -670,8 +670,77 @@ video {
 
 
 
+/* --- BOTÓN ESTADÍSTICAS con estilo idéntico al de VER VIDEO --- */
+#btn-estadisticas {
+  position: absolute;
+  top: 79%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  background-color: #b80505;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 12px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}
+
+/* Hover igual al VER VIDEO */
+#btn-estadisticas:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+}
+
+@keyframes pulseVideo {
+  0%   { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(139,0,0,0.6); }
+  50%  { transform: translateX(-50%) scale(1.08); box-shadow: 0 0 16px rgba(139,0,0,0.9); }
+  100% { transform: translateX(-50%) scale(1); box-shadow: 0 0 10px rgba(139,0,0,0.6); }
+}
+
+#btn-estadisticas.show {
+  opacity: 1;
+  animation: pulseVideo 10s infinite ease-in-out;
+}
 
 
+/* --- BLOQUEO TOTAL EN ORIENTACIÓN HORIZONTAL --- */
+#rotate-warning {
+  position: fixed;
+  inset: 0;
+  background: black;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 999999; /* por encima de todo */
+  padding: 20px;
+  opacity: 0;              /* oculto por defecto */
+  pointer-events: none;     /* desactivado por defecto */
+  transition: opacity 0.4s ease;
+}
+
+/* Cuando el dispositivo está en horizontal */
+@media (orientation: landscape) {
+  #rotate-warning {
+    opacity: 1;             /* aparece */
+    pointer-events: all;    /* bloquea toda interacción */
+  }
+
+  /* Ocultar TODO el contenido en horizontal */
+  body *:not(#rotate-warning) {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
 
 
 
