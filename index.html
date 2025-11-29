@@ -10,6 +10,9 @@
 
 <body>
 
+  <div id="rotate-warning">GIRA TU DISPOSITIVO PARA CONTINUAR</div>
+
+
   <!-- ▬▬▬▬▬▬▬▬ VIDEO INTRO ▬▬▬▬▬▬▬▬ -->
   <div class="video-container">
     <video autoplay muted playsinline id="intro-video">
@@ -67,9 +70,13 @@
 
     <div id="postVideoBtns" class="post-video-buttons hidden">
       <button id="btn-ver-video">VER VIDEO</button>
+      <button id="btn-estadisticas">ESTADÍSTICAS</button>
     </div>
 
   </div>
+
+  
+
 
   <!-- ▬▬▬▬▬▬▬▬ SCRIPT ▬▬▬▬▬▬▬▬ -->
   <script>
@@ -151,7 +158,7 @@
   },
   {
     img: "icons/Case_9_sin_bg.png",
-    name: "CASO 9 - Minería Ilegal"
+    name: "CASO 9"
   },
   {
     img: "icons/Case_10_sin_bg.png",
@@ -159,7 +166,7 @@
   },
   {
     img: "icons/Case_11_sin_bg.png",
-    name: "CASO 11 - Servidmbre Doméstica"
+    name: "CASO 11"
   },
   {
     img: "icons/Case_12_sin_bg.png",
@@ -214,6 +221,7 @@ const explosionVideo = document.getElementById("explosion-video");
 const closeX = document.getElementById("closeX");
 const postVideoBtns = document.getElementById("postVideoBtns");
 const btnVerVideo = document.getElementById("btn-ver-video");
+const btnEstadisticas = document.getElementById("btn-estadisticas");
 
 let showButtonsTimeout;
 let snapshot = { time: 0, isVisible: false };
@@ -224,11 +232,16 @@ function scheduleButtons(delay = 2000) {
   btnVerVideo.classList.remove("show");
   postVideoBtns.style.display = "flex";
 
+  btnEstadisticas.classList.remove("show");
+
   if(showButtonsTimeout) clearTimeout(showButtonsTimeout);
 
   showButtonsTimeout = setTimeout(() => {
     closeX.classList.add("visible");
     btnVerVideo.classList.add("show");
+
+    btnEstadisticas.classList.add("show");
+
     snapshot.time = explosionVideo.currentTime;
     snapshot.isVisible = true;
   }, delay);
