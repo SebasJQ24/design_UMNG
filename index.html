@@ -348,7 +348,9 @@ const posterButtonsContainer = document.getElementById("poster-buttons-container
 let isPosterOpen = false;
 
 btnEstadisticas.addEventListener("click", () => {
-  if (currentCase === 0) {
+    // Lógica para abrir el PÓSTER solo para el CASO 1
+if (!isPosterOpen && currentCase === 0) {
+  
     // 1. Ocultar los botones de Ver Video / Estadísticas
     postVideoBtns.style.display = "none";
 
