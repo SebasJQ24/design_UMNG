@@ -348,6 +348,8 @@ const posterButtonsContainer = document.getElementById("poster-buttons-container
 let isPosterOpen = false;
 
 btnEstadisticas.addEventListener("click", () => {
+  if currentCase !== 0 return; // Solo para el Caso 1
+  else {
     // 1. Ocultar los botones de Ver Video / Estadísticas
     postVideoBtns.style.display = "none";
 
@@ -369,6 +371,8 @@ btnEstadisticas.addEventListener("click", () => {
 
     // 6. Actualizar estado
     isPosterOpen = true;
+    return; // Detenemos la función aquí
+  }
 });
 
 
