@@ -69,7 +69,7 @@ video {
   }
 }
 
-/* --- CÍRCULO BLANCO DEL SONIDO --- */
+/* --- CÍRCULO DEL SONIDO --- */
 .sound-circle {
   position: absolute;
   bottom: 5%;
@@ -87,32 +87,45 @@ video {
   transition: all 0.4s ease;
 }
 
-#sound-btn {
-  width: 28px;
-  height: 28px;
-  filter: brightness(1.4);
-  pointer-events: none;
-}
-
 .sound-circle:hover {
   background: rgba(255, 255, 255, 0.25);
   transform: scale(1.05);
 }
 
-/* Sonido activado */
 .sound-circle.active {
   background: rgba(255, 255, 255, 0.35);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
   border-color: #fff;
 }
 
-/* Oculto */
 .sound-circle.hidden {
   opacity: 0;
   pointer-events: none;
   transform: scale(0.8);
   transition: all 0.6s ease;
 }
+
+/* --- Opacidad cuando muteado --- */
+.sound-circle.muted {
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+/* --- Ícono interno --- */
+#sound-btn {
+  width: 28px;
+  height: 28px;
+  filter: brightness(1.4);
+  pointer-events: none;
+  z-index: 99999;
+}
+
+#sound-toggle.center-left {
+  bottom: 95% !important;
+  transform: translateY(50%);
+  z-index: 99999;
+}
+
 
 /* --- OVERLAY DEL BOTÓN PRINCIPAL --- */
 .overlay {
@@ -614,10 +627,20 @@ video {
   justify-content: center;
   opacity: 0;
   cursor: pointer;
-  z-index: 99999;
+  z-index: 10005;
   transition: opacity 0.6s ease-out;
   box-shadow: 0 0 12px rgba(255,0,0,0.6);
 }
+
+
+/* AÑADIR NUEVA CLASE PARA POSICIONAR LA X EN EL PÓSTER */
+.btn-close-x.poster-position {
+    top: 20px !important; /* Más alejado del borde */
+    right: 20px !important;
+    left: auto !important; /* Desactiva left: 50% */
+    transform: none !important; /* Desactiva el centrado */
+}
+
 
 /* Pulso X */
 @keyframes pulseX {
@@ -630,6 +653,12 @@ video {
   opacity: 1;
   animation: pulseX 1.8s infinite ease-in-out;
 }
+
+#closeX.up {
+  top: 20px !important;
+  
+}
+
 
 /* Botón VER VIDEO */
 #btn-ver-video {
@@ -743,5 +772,70 @@ video {
 }
 
 
+/* --- OVERLAY DEL PÓSTER FINAL --- */
+#poster-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 10002; /* por encima de todo */
+  opacity: 1;
+  transition: opacity 0.3s ease;
 
+}
+
+/* Ocultar poster al inicio */
+#poster-overlay.hidden {
+  display: none;
+  opacity: 0;
+}
+
+/* Imagen del poster */
+#poster-image {
+  max-width: 90vw;   /* se ajusta al ancho de la pantalla */
+  max-height: 80vh;  /* se ajusta al alto de la pantalla */
+  object-fit: contain; /* mantiene proporción */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border-radius: 8px;
+  z-index: 10003;
+  margin: 0;
+}
+
+
+
+/* Contenedor de botones Share y Download */
+#poster-buttons {
+  margin-top: auto; /* Empuja los botones hacia abajo */
+  margin-bottom: 5px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  z-index: 10004;
+}
+
+#poster-buttons img {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+#poster-buttons img.show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+#poster-buttons img:hover {
+  transform: scale(1.1);
+}
 

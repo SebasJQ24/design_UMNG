@@ -10,6 +10,11 @@
 
 <body>
 
+  <!-- BOTÓN DE SONIDO GLOBAL -->
+    <div class="sound-circle" id="sound-toggle">
+      <img src="icons/sound_icon.png" id="sound-btn" alt="Sonido" />
+    </div>
+    
   <div id="rotate-warning">GIRA TU DISPOSITIVO PARA CONTINUAR</div>
 
 
@@ -18,10 +23,6 @@
     <video autoplay muted playsinline id="intro-video">
       <source src="videos/LOADING SCREEN_CELULAR.mp4" type="video/mp4">
     </video>
-
-    <div class="sound-circle" id="sound-circle">
-      <img src="icons/sound_icon.png" id="sound-btn" alt="Sonido" />
-    </div>
 
     <div class="overlay" id="overlay">
       <button id="btn-entrar">ENTRAR A LA EXPERIENCIA</button>
@@ -78,264 +79,437 @@
   
 
 
-  <!-- ▬▬▬▬▬▬▬▬ SCRIPT ▬▬▬▬▬▬▬▬ -->
+<!-- Overlay del poster -->
+<div id="poster-overlay" class="hidden">
+  <img id="poster-image" src="icons/poster.png" alt="Poster Final">
+
+  <!-- Botones del poster junto a la X -->
+  <div id="poster-buttons-container">
+    <img id="btn-share" src="icons/share.png" alt="Compartir">
+    <img id="btn-download" src="icons/download.png" alt="Descargar">
+  </div>
+</div>
+
+
+
+
+  <!-- ▬▬▬▬▬▬▬▬ FIX PARA AUTOPLAY MUTEADO ▬▬▬▬▬▬▬▬ -->
   <script>
-
-    /* ---------------- VIDEO INTRO ---------------- */
-
-    const video = document.getElementById("intro-video");
-    const soundCircle = document.getElementById("sound-circle");
-    const btnEntrar = document.getElementById("btn-entrar");
-    const overlay = document.getElementById("overlay");
-    const gallery = document.getElementById("gallery");
-    const caseView = document.getElementById("case-view");
-    const caseImage = document.getElementById("case-image");
-    const caseName = document.getElementById("case-name");
-    const btnPrev = document.getElementById("btn-prev");
-    const btnNext = document.getElementById("btn-next");
-    const btnGallery = document.getElementById("btn-gallery");
-    const btnInfo = document.getElementById("btn-info");
-
-    video.playbackRate = 1.2;
-
-    soundCircle.addEventListener("click", () => {
-      video.muted = !video.muted;
-      soundCircle.classList.toggle("active", !video.muted);
+    document.addEventListener("DOMContentLoaded", () => {
+      const intro = document.getElementById("intro-video");
+      intro.muted = true;           // fuerza mute
+      intro.autoplay = true;        // asegura autoplay
+      intro.play().catch(()=>{});   // evita bloqueo
     });
-
-    video.addEventListener("ended", () => {
-      overlay.classList.add("visible");
-    });
-
-
-    btnEntrar.addEventListener("click", () => {
-      const videoContainer = document.querySelector(".video-container");
-      videoContainer.classList.add("zoom-fade-out");
-
-      setTimeout(() => {
-        videoContainer.style.display = "none";
-        caseView.classList.remove("hidden");
-        setTimeout(() => caseView.classList.add("visible"), 50);
-        showCase(0);
-      }, 1000);
-    });
-
-    /* ---------------- CASOS ---------------- */
-
-    const cases = [
-  {
-    img: "icons/Case_1_sin_bg.png",
-    name: "CASO 1 - Esclavitud Sexual",
-    explosionVideo: "videos/shatter_and_text.mp4",
-    animatic: "videos/esclavitud_sexual_animatic.mp4"
-  },
-  {
-    img: "icons/Case_2_sin_bg.png",
-    name: "CASO 2 - Mendicidad Forzada",
-    explosionVideo: "videos/shatter_and_text_mendicidad.mp4",
-    animatic: "videos/mendicidad_animatic.mp4"
-  },
-  {
-    img: "icons/Case_3_sin_bg.png",
-    name: "CASO 3 - Matrimonio Forzado"
-  },
-  {
-    img: "icons/Case_4_sin_bg.png",
-    name: "CASO 4 - Manipulación Psicológica"
-  },
-  {
-    img: "icons/Case_5_sin_bg.png",
-    name: "CASO 5 - Extracción de Órganos"
-  },
-  {
-    img: "icons/Case_6_sin_bg.png",
-    name: "CASO 6 "
-  },
-  {
-    img: "icons/Case_7_sin_bg.png",
-    name: "CASO 7"
-  },
-  {
-    img: "icons/Case_8_sin_bg.png",
-    name: "CASO 8"
-  },
-  {
-    img: "icons/Case_9_sin_bg.png",
-    name: "CASO 9"
-  },
-  {
-    img: "icons/Case_10_sin_bg.png",
-    name: "CASO 10"
-  },
-  {
-    img: "icons/Case_11_sin_bg.png",
-    name: "CASO 11"
-  },
-  {
-    img: "icons/Case_12_sin_bg.png",
-    name: "CASO 12"
-  }
-];
-
-
-    let currentCase = 0;
-
-    function showCase(index) {
-      currentCase = index;
-      caseImage.src = cases[index].img;
-      caseName.textContent = cases[index].name;
-      gallery.classList.add("hidden");
-      caseView.classList.remove("hidden");
-    }
-
-    btnNext.addEventListener("click", () => {
-      currentCase = (currentCase + 1) % cases.length;
-      showCase(currentCase);
-    });
-
-    btnPrev.addEventListener("click", () => {
-      currentCase = (currentCase - 1 + cases.length) % cases.length;
-      showCase(currentCase);
-    });
-
-    btnGallery.addEventListener("click", () => {
-      caseView.classList.remove("visible");
-      setTimeout(() => {
-        caseView.classList.add("hidden");
-        gallery.classList.remove("hidden");
-        setTimeout(() => gallery.classList.add("visible"), 50);
-      }, 400);
-    });
-
-    document.querySelectorAll(".gallery img").forEach((img, index) => {
-      img.addEventListener("click", () => {
-        gallery.classList.remove("visible");
-        setTimeout(() => {
-          gallery.classList.add("hidden");
-          showCase(index);
-          setTimeout(() => caseView.classList.add("visible"), 50);
-        }, 400);
-      });
-    });
-
-/* ---------------- VIDEO EXPLOSIÓN ---------------- */
-const explosionOverlay = document.getElementById("explosion-overlay");
-const explosionVideo = document.getElementById("explosion-video");
-const closeX = document.getElementById("closeX");
-const postVideoBtns = document.getElementById("postVideoBtns");
-const btnVerVideo = document.getElementById("btn-ver-video");
-const btnEstadisticas = document.getElementById("btn-estadisticas");
-
-let showButtonsTimeout;
-let snapshot = { time: 0, isVisible: false };
-
-// Función que muestra X y VER VIDEO después de cierto tiempo
-function scheduleButtons(delay = 2000) {
-  closeX.classList.remove("visible");
-  btnVerVideo.classList.remove("show");
-  postVideoBtns.style.display = "flex";
-
-  btnEstadisticas.classList.remove("show");
-
-  if(showButtonsTimeout) clearTimeout(showButtonsTimeout);
-
-  showButtonsTimeout = setTimeout(() => {
-    closeX.classList.add("visible");
-    btnVerVideo.classList.add("show");
-
-    btnEstadisticas.classList.add("show");
-
-    snapshot.time = explosionVideo.currentTime;
-    snapshot.isVisible = true;
-  }, delay);
-}
-
-// Botón INFO → abrir video de explosión segun caso
-btnInfo.addEventListener("click", () => {
-
-  if (!cases[currentCase].explosionVideo) return;
-
-  explosionOverlay.classList.remove("hidden");
-  explosionVideo.src = cases[currentCase].explosionVideo;
-  explosionVideo.currentTime = 0;
-  explosionVideo.play();
-  scheduleButtons(3000);
-});
-
-// Botón VER VIDEO → abrir animatic segun caso
-btnVerVideo.addEventListener("click", () => {
-
-  if (!cases[currentCase].animatic) return;
-
-  btnVerVideo.classList.remove("show");
-  postVideoBtns.style.display = "none";
-
-  explosionVideo.src = cases[currentCase].animatic;
-  explosionVideo.currentTime = 0;
-  explosionVideo.play();
-
-  closeX.style.top = "10px";
-  closeX.style.left = "90%";
-  closeX.style.width = "32px";
-  closeX.style.height = "32px";
-});
-
-// Cuando termine el animatic
-explosionVideo.addEventListener("ended", () => {
-  if (explosionVideo.src.includes(cases[currentCase].animatic)) {
-
-    explosionVideo.src = cases[currentCase].explosionVideo;
-    explosionVideo.currentTime = snapshot.time || 0;
-    explosionVideo.play();
-
-    closeX.style.top = "22%";
-    closeX.style.left = "50%";
-    closeX.style.width = "42px";
-    closeX.style.height = "42px";
-
-    if (snapshot.isVisible) {
-      postVideoBtns.style.display = "flex";
-      btnVerVideo.classList.add("show");
-    }
-  }
-});
-
-// X → comportamiento dual
-closeX.addEventListener("click", () => {
-
-  if (explosionVideo.src.includes(cases[currentCase].animatic)) {
-
-    explosionVideo.src = cases[currentCase].explosionVideo;
-    explosionVideo.currentTime = snapshot.time || 0;
-    explosionVideo.play();
-
-    closeX.style.top = "22%";
-    closeX.style.left = "50%";
-    closeX.style.width = "42px";
-    closeX.style.height = "42px";
-
-    if(snapshot.isVisible) {
-      postVideoBtns.style.display = "flex";
-      btnVerVideo.classList.add("show");
-    }
-
-  } else {
-
-    explosionVideo.pause();
-    const reversePlayback = () => {
-      if(explosionVideo.currentTime > 0){
-        explosionVideo.currentTime -= 0.033;
-        requestAnimationFrame(reversePlayback);
-      } else {
-        explosionOverlay.classList.add("hidden");
-        explosionVideo.currentTime = 0;
-      }
-    };
-    reversePlayback();
-  }
-});
-
   </script>
 
-</body>
-</html>
+
+<!-- ▬▬▬▬▬▬▬▬ SCRIPT COMPLETO ▬▬▬▬▬▬▬▬ -->
+<script>
+  /* ---------------- REFERENCIAS ---------------- */
+  const video = document.getElementById("intro-video");
+  const btnEntrar = document.getElementById("btn-entrar");
+  const overlay = document.getElementById("overlay");
+  const gallery = document.getElementById("gallery");
+  const caseView = document.getElementById("case-view");
+  const caseImage = document.getElementById("case-image");
+  const caseName = document.getElementById("case-name");
+  const btnPrev = document.getElementById("btn-prev");
+  const btnNext = document.getElementById("btn-next");
+  const btnGallery = document.getElementById("btn-gallery");
+  const btnInfo = document.getElementById("btn-info");
+
+  const explosionOverlay = document.getElementById("explosion-overlay");
+  const explosionVideo = document.getElementById("explosion-video");
+  const closeX = document.getElementById("closeX");
+  const postVideoBtns = document.getElementById("postVideoBtns");
+  const btnVerVideo = document.getElementById("btn-ver-video");
+  
+
+  /* ---------------- SISTEMA DE AUDIO GLOBAL ---------------- */
+  let soundEnabled = false;
+  let isWatchingAnimatic = false;
+  const soundToggle = document.getElementById("sound-toggle");
+
+  const ambientSound = new Audio("videos/ambience_song.mp3");
+  ambientSound.loop = true;
+  ambientSound.volume = 0.2;
+  const allSounds = [ ambientSound ];
+
+  function updateSoundUI() {
+    soundToggle.classList.toggle("active", soundEnabled);
+
+    const circle = document.querySelector(".sound-circle");
+    if(circle){
+        if(soundEnabled){
+            circle.style.background = "rgba(255, 255, 255, 0.35)";
+            circle.style.boxShadow = "0 0 15px rgba(255, 255, 255, 0.7)";
+            circle.style.borderColor = "#fff";
+            circle.classList.remove("muted");
+        } else {
+            circle.style.background = "rgba(255, 255, 255, 0.15)";
+            circle.style.boxShadow = "0 0 0 rgba(0,0,0,0)";
+            circle.style.borderColor = "rgba(255,255,255,0.4)";
+            circle.classList.add("muted");
+        }
+    }
+  }
+
+  function updateGlobalSound() {
+    allSounds.forEach(s => s.muted = !soundEnabled);
+    video.muted = !soundEnabled;
+    if(isWatchingAnimatic){
+      explosionVideo.muted = !soundEnabled;
+    }
+    updateSoundUI();
+  }
+
+  soundToggle.addEventListener("click", () => {
+    soundEnabled = !soundEnabled;
+    updateGlobalSound();
+
+    if(isWatchingAnimatic){
+      explosionVideo.muted = !soundEnabled;
+    } else if(document.querySelector(".video-container").style.display === "none"){
+      if(soundEnabled) ambientSound.play().catch(()=>{});
+      else ambientSound.pause();
+    }
+  });
+
+  updateGlobalSound();
+
+  /* ---------------- VIDEO INTRO ---------------- */
+  video.playbackRate = 5.2;
+  video.addEventListener("ended", () => overlay.classList.add("visible"));
+
+  btnEntrar.addEventListener("click", () => {
+    const videoContainer = document.querySelector(".video-container");
+    videoContainer.classList.add("zoom-fade-out");
+
+    setTimeout(() => {
+      videoContainer.style.display = "none";
+
+      if (soundEnabled) ambientSound.play().catch(()=>{});
+
+      soundToggle.classList.add("center-left");
+
+      caseView.classList.remove("hidden");
+      setTimeout(() => caseView.classList.add("visible"), 50);
+      showCase(0);
+    }, 1000);
+  });
+
+  /* ---------------- CASOS ---------------- */
+  const cases = [
+    { img: "icons/Case_1_sin_bg.png", name: "CASO 1 - Esclavitud Sexual", explosionVideo: "videos/shatter_and_text.mp4", animatic: "videos/esclavitud_sexual_animatic.mp4" },
+    { img: "icons/Case_2_sin_bg.png", name: "CASO 2 - Mendicidad Forzada", explosionVideo: "videos/shatter_and_text_mendicidad.mp4", animatic: "videos/mendicidad_animatic.mp4" },
+    { img: "icons/Case_3_sin_bg.png", name: "CASO 3 - Matrimonio Forzado" },
+    { img: "icons/Case_4_sin_bg.png", name: "CASO 4 - Manipulación Psicológica" },
+    { img: "icons/Case_5_sin_bg.png", name: "CASO 5 - Extracción de Órganos" },
+    { img: "icons/Case_6_sin_bg.png", name: "CASO 6 " },
+    { img: "icons/Case_7_sin_bg.png", name: "CASO 7" },
+    { img: "icons/Case_8_sin_bg.png", name: "CASO 8" },
+    { img: "icons/Case_9_sin_bg.png", name: "CASO 9" },
+    { img: "icons/Case_10_sin_bg.png", name: "CASO 10" },
+    { img: "icons/Case_11_sin_bg.png", name: "CASO 11" },
+    { img: "icons/Case_12_sin_bg.png", name: "CASO 12" }
+  ];
+
+  let currentCase = 0;
+
+  function showCase(index) {
+    currentCase = index;
+    caseImage.src = cases[index].img;
+    caseName.textContent = cases[index].name;
+    gallery.classList.add("hidden");
+    caseView.classList.remove("hidden");
+    updateSoundUI();
+  }
+
+  btnNext.addEventListener("click", () => {
+    currentCase = (currentCase + 1) % cases.length;
+    showCase(currentCase);
+  });
+
+  btnPrev.addEventListener("click", () => {
+    currentCase = (currentCase - 1 + cases.length) % cases.length;
+    showCase(currentCase);
+  });
+
+  btnGallery.addEventListener("click", () => {
+    if (soundEnabled && document.querySelector(".video-container").style.display === "none") ambientSound.play().catch(()=>{});
+    caseView.classList.remove("visible");
+    setTimeout(() => {
+      caseView.classList.add("hidden");
+      gallery.classList.remove("hidden");
+      setTimeout(() => gallery.classList.add("visible"), 50);
+    }, 400);
+  });
+
+  document.querySelectorAll(".gallery img").forEach((img, index) => {
+    img.addEventListener("click", () => {
+      if (soundEnabled && document.querySelector(".video-container").style.display === "none") ambientSound.play().catch(()=>{});
+      gallery.classList.remove("visible");
+      setTimeout(() => {
+        gallery.classList.add("hidden");
+        showCase(index);
+        setTimeout(() => caseView.classList.add("visible"), 50);
+      }, 400);
+    });
+  });
+
+  /* ---------------- VIDEO EXPLOSIÓN ---------------- */
+  let showButtonsTimeout;
+  let snapshot = { time: 0, isVisible: false };
+  let ambientWasPlaying = false;
+
+  function scheduleButtons(delay = 2000) {
+    closeX.classList.remove("visible");
+    btnVerVideo.classList.remove("show");
+    btnEstadisticas.classList.remove("show");
+    postVideoBtns.style.display = "flex";
+
+    if(showButtonsTimeout) clearTimeout(showButtonsTimeout);
+
+    showButtonsTimeout = setTimeout(() => {
+      closeX.classList.add("visible");
+      btnVerVideo.classList.add("show");
+      btnEstadisticas.classList.add("show");
+
+      snapshot.time = explosionVideo.currentTime;
+      snapshot.isVisible = true;
+    }, delay);
+  }
+
+  btnInfo.addEventListener("click", () => {
+    if (!cases[currentCase].explosionVideo) return;
+
+    ambientWasPlaying = !ambientSound.paused;
+
+    explosionOverlay.classList.remove("hidden");
+
+    explosionVideo.src = cases[currentCase].explosionVideo;
+    explosionVideo.currentTime = 0;
+    explosionVideo.muted = !soundEnabled;
+    explosionVideo.play();
+
+    if (!allSounds.includes(explosionVideo)) allSounds.push(explosionVideo);
+
+    scheduleButtons(3000);
+  });
+
+  btnVerVideo.addEventListener("click", () => {
+    if(!cases[currentCase].animatic) return;
+
+    isWatchingAnimatic = true;
+    ambientWasPlaying = !ambientSound.paused;
+    ambientSound.pause();
+
+    closeX.classList.add("up");
+    btnVerVideo.classList.remove("show");
+    postVideoBtns.style.display = "none";
+
+    explosionVideo.src = cases[currentCase].animatic;
+    explosionVideo.currentTime = 0;
+    explosionVideo.muted = !soundEnabled;
+    explosionVideo.play();
+  });
+
+  explosionVideo.addEventListener("ended", () => {
+    if(isWatchingAnimatic){
+      isWatchingAnimatic = false;
+
+      if(ambientWasPlaying && soundEnabled && document.querySelector(".video-container").style.display === "none"){
+        ambientSound.play().catch(()=>{});
+      }
+
+      explosionVideo.src = cases[currentCase].explosionVideo;
+      explosionVideo.currentTime = snapshot.time || 0;
+      explosionVideo.muted = !soundEnabled;
+      explosionVideo.play();
+
+      if(snapshot.isVisible){
+        postVideoBtns.style.display = "flex";
+        btnVerVideo.classList.add("show");
+      }
+    }
+  });
+
+/* ---------------- POSTER ---------------- */
+const btnEstadisticas = document.getElementById("btn-estadisticas");
+const posterOverlay = document.getElementById("poster-overlay");
+const posterImage = document.getElementById("poster-image");
+const btnShare = document.getElementById("btn-share");
+const btnDownload = document.getElementById("btn-download");
+// Referencia correcta del contenedor de botones del póster
+const posterButtonsContainer = document.getElementById("poster-buttons-container"); 
+
+
+let isPosterOpen = false;
+
+btnEstadisticas.addEventListener("click", () => {
+    // 1. Ocultar los botones de Ver Video / Estadísticas
+    postVideoBtns.style.display = "none";
+
+    // 2. MOVER LA X DENTRO DEL PÓSTER
+    posterOverlay.appendChild(closeX); 
+
+    // 3. Mostrar el overlay del póster
+    posterOverlay.classList.remove("hidden");
+    posterOverlay.style.display = "flex";
+
+    // 4. Mostrar y posicionar la X
+    closeX.classList.add("visible");
+    closeX.classList.remove("up");
+    closeX.classList.add("poster-position"); // Aplica la posición superior derecha
+    
+    // 5. Mostrar botones de Compartir/Descargar
+    btnShare.classList.add("show");
+    btnDownload.classList.add("show");
+
+    // 6. Actualizar estado
+    isPosterOpen = true;
+});
+
+
+// index.html (Script Completo - Reemplaza tu actual closeX.addEventListener)
+closeX.addEventListener("click", () => {
+    // 1. Lógica para cerrar el PÓSTER
+    if (isPosterOpen) {
+
+        // 🔴 PRIMERO: DEVOLVER LA X A SU LUGAR ORIGINAL
+        // La X originalmente está dentro de explosion-overlay, justo antes de explosion-video.
+        explosionOverlay.prepend(closeX); // Añade la X como primer hijo de explosionOverlay
+        
+        // Ocultar el póster
+        posterOverlay.classList.add("hidden");
+        posterOverlay.style.display = "none";
+
+        // Ocultar los botones del póster
+        btnShare.classList.remove("show");
+        btnDownload.classList.remove("show");
+
+        // Quitar la clase de posición del póster
+        closeX.classList.remove("poster-position");
+
+        // Mostrar los botones de post-video (VER VIDEO / ESTADÍSTICAS)
+        if (!explosionOverlay.classList.contains("hidden")) {
+            postVideoBtns.style.display = "flex";
+            btnVerVideo.classList.add("show");
+            btnEstadisticas.classList.add("show");
+        }
+
+        // Restaurar estado
+        isPosterOpen = false;
+        
+        // La X sigue visible porque el explosionOverlay sigue abierto
+        closeX.classList.add("visible"); 
+        
+        return; // Detenemos la función aquí
+    }
+
+    // 2. Lógica ORIGINAL para cerrar el VIDEO DE EXPLOSIÓN/ANIMATIC
+    
+    if(isWatchingAnimatic){
+        // Si estaba viendo el Animatic, vuelve al frame de explosión
+        isWatchingAnimatic = false;
+
+        // Reproduce el sonido de ambiente si estaba activo
+        if(ambientWasPlaying && soundEnabled && document.querySelector(".video-container").style.display === "none"){
+            ambientSound.play().catch(()=>{});
+        }
+
+        // Restaura el video de explosión
+        explosionVideo.src = cases[currentCase].explosionVideo;
+        explosionVideo.currentTime = snapshot.time || 0;
+        explosionVideo.muted = !soundEnabled;
+        explosionVideo.play();
+        
+        // Restaura los botones (si estaban visibles)
+        if(snapshot.isVisible){
+            postVideoBtns.style.display = "flex";
+            btnVerVideo.classList.add("show");
+            btnEstadisticas.classList.add("show");
+        }
+        closeX.classList.remove("up"); // Baja la X
+    } else {
+        // Si estaba viendo el video de explosión, hace la reversa
+        explosionVideo.pause();
+        const reversePlayback = () => {
+            if(explosionVideo.currentTime > 0){
+                explosionVideo.currentTime -= 0.033;
+                requestAnimationFrame(reversePlayback);
+            } else {
+                explosionOverlay.classList.add("hidden");
+                explosionVideo.currentTime = 0;
+
+                // 🚀 AQUÍ ES DONDE LO PONES 🚀
+                // Esto asegura que si se vuelve a abrir el explosionOverlay, la X
+                // no se quede con el estilo de la esquina superior del póster.
+                closeX.classList.remove("poster-position");
+
+                // Si estaba el ambient, lo vuelve a reproducir
+                if (ambientWasPlaying && soundEnabled && document.querySelector(".video-container").style.display === "none") {
+                    ambientSound.play().catch(()=>{});
+                }
+                // Limpia la X
+                closeX.classList.remove("visible"); 
+                // Limpia los botones de post video
+                postVideoBtns.style.display = "none";
+            }
+        };
+        reversePlayback();
+    }
+});
+
+
+/* ---------------- FUNCIONES DE COMPARTIR Y DESCARGAR ---------------- */
+
+// 1. Función para Descargar la Imagen
+btnDownload.addEventListener("click", () => {
+    // La imagen a descargar es posterImage (icons/poster.png)
+    const imageUrl = posterImage.src;
+    
+    // Crear un elemento <a> temporal
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    link.download = 'Falsa_Normalidad_Poster.png'; // Nombre del archivo a descargar
+    
+    // Simular clic en el enlace
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
+
+
+// 2. Función para Compartir
+btnShare.addEventListener("click", () => {
+    // URL base de la aplicación (asume que está hosteada en algún lugar)
+    const shareUrl = window.location.href; 
+    
+    // Si el navegador soporta la Web Share API
+    if (navigator.share) {
+        navigator.share({
+            title: 'Falsa Normalidad - Exposición',
+            text: 'Descubre los casos de la Falsa Normalidad. ¡Visita la experiencia interactiva!',
+            url: shareUrl,
+        })
+        .then(() => console.log('Contenido compartido con éxito.'))
+        .catch((error) => console.error('Error al compartir:', error));
+    } else {
+        // Fallback para navegadores que no soportan Web Share
+        alert('Tu navegador no soporta la función de compartir nativa. Copia el enlace: ' + shareUrl);
+        
+        // Opcional: copiar el enlace al portapapeles
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            alert('¡El enlace ha sido copiado al portapapeles!');
+        }).catch(err => {
+            console.error('Error al copiar el enlace:', err);
+        });
+    }
+});
+
+
+</script>
+
+
